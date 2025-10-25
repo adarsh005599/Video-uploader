@@ -12,7 +12,7 @@ export interface IVideo {
     title: string;
     description:string;
     videoUrl: string;
-    thumbnailUrl: string;
+    thumbnailUrl: string; 
     controls?: boolean;
     transformation?: {
         height: number;
