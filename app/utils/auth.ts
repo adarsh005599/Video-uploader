@@ -29,7 +29,7 @@ providers: [
                 if(!user){
                     throw new Error("No user found with this")
                 }
-                //pass
+                
                 const isValid = await bcrypt.compare(
                     Credentials.password,
                     user.password
