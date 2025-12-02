@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 
 export const authOptions :NextAuthOptions ={
 providers: [
+    // SAME FOR THE GOOGLE AUTH, etc
 //   GitHubProvider({
 //     clientId: process.env.GITHUB_ID!,
 //     clientSecret: process.env.GITHUB_SECRET!
