@@ -13,6 +13,7 @@ providers: [
 //     clientId: process.env.GITHUB_ID!,
 //     clientSecret: process.env.GITHUB_SECRET!
 //   })
+    
     Credentials({
         name:"Credentials",
         credentials:{
@@ -64,6 +65,8 @@ providers: [
             return session
         }
     },
+
+    // examples
     pages: {
         signIn:"/login",
         error:"/login"
