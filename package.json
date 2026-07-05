@@ -11,7 +11,9 @@
   "dependencies": {
     "@imagekit/next": "^2.1.5",
     "@types/bcryptjs": "^2.4.6",
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "^3.0.3",
+    "imagekitio-react": "^4.3.0",
+    "lucide-react": "^1.23.0",
     "mongoose": "^8.18.2",
     "next": "15.5.4",
     "next-auth": "^4.24.11",

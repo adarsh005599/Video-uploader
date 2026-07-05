@@ -1,79 +1,61 @@
-
-import GitHubProvider from "next-auth/providers/github";
-import Credentials, { CredentialsProvider } from "next-auth/providers/credentials";
-import { NextAuthOptions } from "next-auth";
-import { connDB } from "./db";
+import { AuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { connDB } from "@/app/utils/db";
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
 
-export const authOptions :NextAuthOptions ={
-providers: [
-    // SAME FOR THE GOOGLE AUTH, etc
-//   GitHubProvider({
-//     clientId: process.env.GITHUB_ID!,
-//     clientSecret: process.env.GITHUB_SECRET!
-//   })
-    
-    Credentials({
-        name:"Credentials",
-        credentials:{
-            email: {label:"Username" , type:"text"},
-            password:{label: "password", type:"password"}
-        },
-        async authorize(Credentials, req){
-            if(!Credentials?.email || Credentials?.password){
-                throw new Error("email or password is missing!")
-            }
-            try {
-                await connDB()
-                const user = await User.findOne({email:Credentials.email})
-
-                if(!user){
-                    throw new Error("No user found with this")
-                }
-                
-                const isValid = await bcrypt.compare(
-                    Credentials.password,
-                    user.password
-                )  
-                if(!isValid){
-                    throw new Error ("opps!! Invalid password!")
-                }
-                return{
-                    id: user._id.toString(),
-                    email:user.email
-                }
-            } catch (error) {
-                console.error("Auth error:", error)
-                throw new Error("Auth not valid")
-                status:400
-            }
+export const authOptions: AuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email and password are required");
         }
-    })
-],
-    callbacks:{
-        async jwt({token, user}){
-            if(user){
-                token.id=user.id
-            }
-            return token
-        },
-        async session({session, token}){
-            if(session.user){
-                session.user.id= token.id as string
-            }
-            return session
-        }
-    },
 
-    // examples
-    pages: {
-        signIn:"/login",
-        error:"/login"
+        await connDB();
+
+        const user = await User.findOne({ email: credentials.email });
+        if (!user) {
+          throw new Error("No user found with this email");
+        }
+
+        const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isValid) {
+          throw new Error("Incorrect password");
+        }
+
+        return {
+          id: user._id.toString(),
+          email: user.email,
+        };
+      },
+    }),
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
     },
-    session:{
-        strategy:"jwt",
-        maxAge:30*24*60*60,
+    async session({ session, token }) {
+      if (session.user) {
+        (session.user as any).id = token.id;
+      }
+      return session;
     },
-    secret:process.env.NEXTAUTH_SECRET
-}
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
