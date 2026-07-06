@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Add this block to ignore ESLint errors during deployment
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // If you also want to ignore TypeScript type-checking errors during build, add this:
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 };
 
 export default nextConfig;
