@@ -19,12 +19,11 @@ class ApiClient {
       "Content-Type": "application/json",
       ...headers,
     };
-
-    const response = await fetch(`/api${endpoint}`, {
-      method,
-      headers: defaultHeaders,
-      body: body ? JSON.stringify(body) : undefined,
-    });
+const response = await fetch(`/api${endpoint}`, { // Notice the backticks (`)!
+  method,
+  headers: defaultHeaders,
+  body: body ? JSON.stringify(body) : undefined,
+});
 
     if (!response.ok) {
       throw new Error(await response.text());
