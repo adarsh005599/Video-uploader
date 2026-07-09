@@ -11,7 +11,7 @@ ReelsPro is a premium, full-stack Next.js application designed for uploading, ma
 * **Dedicated Viewing Pages:** Server-rendered dynamic routes (`/videos/[id]`) for optimal SEO, fast loading, and distraction-free viewing.
 * **Database Integration:** MongoDB with Mongoose ODM for secure and scalable metadata storage.
 
----
+--
 
 ## 🛠️ Tech Stack
 
